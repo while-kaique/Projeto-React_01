@@ -1,13 +1,19 @@
-import {BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom'
+// Importando pacotes necessários
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+
+// Importando páginas
 import Company from './components/pages/Company';
 import Home from './components/pages/Home';
 import Contact from './components/pages/Contact';
 import NewProject from './components/pages/NewProject';
+import Projects from './components/pages/Projects';
 
+// Importando componentes
 import Container from './components/layout/Container';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer'
 
+// Criando aplicação "App" que está indexada ao arquivo html index.html
 function App() {
   return (
     <Router>
@@ -15,9 +21,10 @@ function App() {
       <Container customClass='min-height'>
         <Routes>
           <Route exact path='/' element={<Home />}/>
-          <Route path='/company' element={<Company />}/>
-          <Route path='/contact' element={<Contact />}/>
-          <Route path='/newproject' element={<NewProject />}/>
+          <Route exact path='/projects' element={<Projects />}/>
+          <Route exact path='/company' element={<Company />}/>
+          <Route exact path='/contact' element={<Contact />}/>
+          <Route exact path='/newproject' element={<NewProject />}/>
         </Routes>
       </Container>
       <Footer />
