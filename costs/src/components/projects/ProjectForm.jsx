@@ -5,7 +5,7 @@ import Select from '../form/Select'
 import SubmitButton from '../form/SubmitButton'
 import styles from './ProjectForm.module.css'
 
-function ProjectForm ({btnText}){
+function ProjectForm ({handleSubmit, projectData ,btnText}){
 
     const [categories, setCategories] = useState([])
 
@@ -22,6 +22,7 @@ function ProjectForm ({btnText}){
         })
         .catch(error => {console.log(error)})
     }, [])
+
     
 
     return (
