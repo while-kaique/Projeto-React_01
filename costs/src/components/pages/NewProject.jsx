@@ -15,7 +15,10 @@ function NewProject (){
             },
             body: JSON.stringify(project)
         }).then(res => res.json())
-        .then(data => console.log(data))
+        .then(data => {
+            console.log(data)
+            // Redirecionamento
+        })
         .catch(err => console.log(err))
     }
     return (
