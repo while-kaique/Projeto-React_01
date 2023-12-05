@@ -1,9 +1,13 @@
+import { useNavigate } from 'react-router-dom'
+
 import styles from './NewProject.module.css'
 
 import ProjectForm from '../projects/ProjectForm'
 
 function NewProject (){
     
+    const navigate = useNavigate()
+
     function createPost(project){
         project.cost = 0
         project.services = []
@@ -17,7 +21,7 @@ function NewProject (){
         }).then(res => res.json())
         .then(data => {
             console.log(data)
-            // Redirecionamento
+            navigate("/projects",{ message: "Projeto criado com sucesso"})
         })
         .catch(err => console.log(err))
     }

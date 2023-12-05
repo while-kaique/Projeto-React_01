@@ -5,7 +5,7 @@ function Select ({text, name, options, handleOnChange, value}){
         <div className={styles.form_control}>
             <label htmlFor={name}>{text}</label>
             <select onChange={handleOnChange} name={name} id={name} value={value || ''}>
-                <option value="">Selecione uma opção</option>
+                <option>Selecione uma opção</option>
                 {options.map((option)=>{
                     return <option value={option.id} key={option.id}>{option.name}</option>
                 })}
