@@ -1,18 +1,21 @@
 import styles from './Project.module.css'
 
-import {useParams} from 'react-router-dom'
+import {useParams, useNavigate} from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import Loading from '../layout/Loading'
 
-
 import Container from '../layout/Container.jsx'
+import ProjectForm from '../projects/ProjectForm.jsx'
 
 function Project () {
 
     const { id } = useParams()
+    const navigate = useNavigate()
+
     
     const [project, setProject] = useState([])
     const [showProjectForm, setShowProjectForm] = useState(false)
+    const [updId, setUpdId] = useState(0)
 
     useEffect(()=> {
         setTimeout(() => {
@@ -31,6 +34,29 @@ function Project () {
 
     function toggleProjectForm(){
         setShowProjectForm(!showProjectForm)
+    }
+
+    function updateProject(project) {
+        console.log(id)
+        fetch(`http://localhost:5000/projects/${id}`, {
+            method: "PATCH",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(project)
+        }).then(res => res.json())
+        .then(data => {
+            setUpdId(updId + 1)
+            console.log(updId)
+            console.log(updId)
+            console.log(updId)
+            console.log(updId)
+            console.log(updId)
+            console.log(updId)
+            const state = {message: 'Projeto atualizado com sucesso!'}
+            navigate("/projects", { state, updId })
+        })
+        .catch(err => console.log(err + 'eeeeeeeeeeeeeeeeeeeeeeeeee'))
     }
 
     return (
@@ -57,7 +83,7 @@ function Project () {
                                 </div>
                             ) : (
                                 <div className={styles.project_info}>
-                                    <p>Formulário</p>
+                                    <ProjectForm handleSubmit={updateProject} btnText="Atualizar Projeto"/>
                                 </div>
                             )}
                         </div>

@@ -19,9 +19,11 @@ function Projects (){
     let message = ''
     if(location.state){
         message = location.state.message
+        console.log(location.updId)
     }
-
+    
     useEffect(()=>{
+        
         setTimeout(() => {
             fetch('http://localhost:5000/projects', {
                 method: 'GET',
@@ -64,14 +66,30 @@ function Projects (){
             <Container customClass="start">
                 {projects.length > 0 && 
                 projects.map((project)=>{
-                    return <ProjectCard 
-                    id={project.id}
-                    name={project.name}
-                    budget={project.budget}
-                    category={project.category.name}
-                    key={project.id}
-                    handleRemove={removeProject}
-                    />
+                    console.log(location.updId)
+                    return (
+                        project.id !== location.updId ? (
+                            <ProjectCard 
+                            id={project.id}
+                            name={project.name}
+                            budget={project.budget}
+                            category={project.category.name}
+                            key={project.id}
+                            handleRemove={removeProject}
+                            customClass=""
+                            />
+                        ) : (
+                            <ProjectCard 
+                            id={project.id}
+                            name={project.name}
+                            budget={project.budget}
+                            category={project.category.name}
+                            key={project.id}
+                            handleRemove={removeProject}
+                            customClass="updated"
+                            />
+                        )
+                    )
                 })}
 
                 {!removeLoading && <Loading/>}
