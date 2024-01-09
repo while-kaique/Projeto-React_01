@@ -18,8 +18,15 @@
         "id": "2",
         "name": "Desenvolvimento"
       },
-      "cost": 0,
-      "services": [],
+      "cost": 900,
+      "services": [
+        {
+          "name": "dadadad",
+          "cost": "900",
+          "description": "dadada",
+          "id": "b2dadc93-744d-491c-b3f1-83e108022782"
+        }
+      ],
       "id": 4
     },
     {
