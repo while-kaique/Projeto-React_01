@@ -14,7 +14,6 @@ function ServiceForm({ handleSubmit, btnText, projectData }) {
     function submit(e){
         e.preventDefault()
         projectData.services.push(service)
-        console.log(projectData.services)
         handleSubmit(projectData)
     }
     

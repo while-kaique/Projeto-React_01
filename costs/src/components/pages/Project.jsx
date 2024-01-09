@@ -10,6 +10,7 @@ import Message from '../layout/Message.jsx'
 import Container from '../layout/Container.jsx'
 import ProjectForm from '../projects/ProjectForm.jsx'
 import ServiceForm from '../services/ServiceForm.jsx'
+import ServiceCard from '../services/ServiceCard.jsx'
 
 function Project () {
 
@@ -17,6 +18,7 @@ function Project () {
 
     
     const [project, setProject] = useState([])
+    const [services, setServices] = useState([])
     const [showProjectForm, setShowProjectForm] = useState(false)
     const [showServiceForm, setShowServiceForm] = useState(false)
     const [message, setMessage] = useState()
@@ -28,11 +30,12 @@ function Project () {
             fetch(`http://localhost:5000/projects/${id}`, {
                 method: 'GET',
                 headers: {
-                    'Content-Type': 'aplication/json'
+                    'Content-Type': 'application/json'
                 }
             }).then(resp => resp.json())
             .then((data) => {
                 setProject(data)
+                setServices(data.services)
             })
             .catch(err => console.log(err))
         }, 500)    
@@ -41,21 +44,24 @@ function Project () {
 
 
     function createService(project) {
-        setMessage('e')
-        console.log('começou a criar o serviço')
 
         const lastService = project.services[project.services.length - 1]
-        console.log('Definiu o mais recente ' + lastService)
+        lastService.id = uuidv4()
 
         const lastServiceCost = lastService.cost
-        console.log('Definiu o custo do mais recente ' + lastServiceCost)
+        if (lastServiceCost < 0) {
+            setMessage('O valor não pode ser negativo.')
+            setType('error')
+            project.services.pop()
+            return false;
+        }
+        
+        console.log('passo2')
 
         const newCost = parseFloat(project.cost) + parseFloat(lastServiceCost)
-        console.log('Definiu o novo custo ' + newCost)
 
         if(newCost > parseFloat(project.budget)) {
-            console.log('Entrou no IF')
-            setMessage('Orçamento Ultrapassado, verifique o valor do serviço')
+            setMessage('Orçamento será ultrapassado, verifique o valor do serviço.')
             setType('error')
             project.services.pop()
             return false;
@@ -64,19 +70,47 @@ function Project () {
         project.cost = newCost
 
         fetch(`http://localhost:5000/projects/${project.id}`, {
-            method: 'PATCH',
+            method: "PATCH",
             headers: {
-                'Content-Type': 'aplication/json'
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify(project)
-        })
-        .then(resp => resp.json())
+        }).then(res => res.json())
         .then((data) => {
-            console.log(data)
-            console.log(project)
+            setProject(data)
+            setMessage('Serviço adicionado com sucesso!')
+            setType('sucess')
         })
         .catch(err => console.log(err))
 
+    }
+
+    function removeService(id, cost){
+
+        
+        const servicesUpdated = project.services.filter(service => service.id !== id)
+
+        const projectUpdated = project
+
+        projectUpdated.services = servicesUpdated
+        projectUpdated.cost = parseFloat(projectUpdated.cost) - parseFloat(cost)
+
+
+        fetch(`http://localhost:5000/projects/${projectUpdated.id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(projectUpdated)
+        }).then(resp => resp.json()
+        .then(data => {
+            setProject(projectUpdated)
+            setServices(servicesUpdated)
+
+            setMessage('Projeto excluído com sucesso!')
+            setType('sucess')
+        })
+        .catch(err => console.log(err)))
     }
 
     function toggleProjectForm(){
@@ -87,7 +121,6 @@ function Project () {
     }
 
     function updateProject(project) {
-        setMessage('')
 
         if (project.budget < project.cost) {
             setMessage('O orçamento total não pode ser menor que o custo do projeto!')
@@ -117,7 +150,7 @@ function Project () {
             {project.name ? 
                 (<div className={styles.project_details}>
                     <Container customClass="column">
-                        <Message type={type} msg={message}/>
+                        <Message type={type} msg={message} setMessage={setMessage}/>
                         <div className={styles.details_container}>
                             <h1>Projeto: {project.name}</h1>
                             <button className={styles.btn} onClick={toggleProjectForm}>
@@ -161,7 +194,26 @@ function Project () {
                         </div>
                         <h2>Serviços</h2>
                         <Container customClass="start">
-                            <p>Itens de serviço</p>
+
+                            {services.length > 0 && 
+                            services.map((service)=>{
+                                return (
+                                    <ServiceCard 
+                                        id={service.id}
+                                        name={service.name}
+                                        cost={service.cost}
+                                        description={service.description}
+                                        key={service.id}
+                                        handleRemove={removeService}
+                                    />
+                                )
+                            })
+                            }
+
+                            {services.length === 0 &&
+                                <p>Não há serviços</p>
+                            }
+                            
                         </Container>
                         { /*Área de Serviços*/ /*Área de Serviços*/ /*Área de Serviços*/ }
                         
