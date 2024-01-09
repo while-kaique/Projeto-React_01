@@ -13,7 +13,7 @@
     },
     {
       "name": "dev2",
-      "budget": "123131313",
+      "budget": "1000",
       "category": {
         "id": "2",
         "name": "Desenvolvimento"

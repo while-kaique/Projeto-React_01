@@ -4,6 +4,7 @@
     border-radius: 5px;
     width: 24%;
     margin: 0.5%;
+    transition: 1s;
 }
 
 .project_card h4 {
@@ -14,11 +15,29 @@
     font-size: 1.3em;
 }
 
+.updated_card {  
+    padding: 1em;
+    border: 2px solid #72ff3a;
+    border-radius: 5px;
+    width: 24%;
+    margin: 0.5%;
+}
+
+.updated_card h4 {
+    background-color: #222222;
+    color: #FFBB33;
+    padding: .4em;
+    margin-bottom: 1.3em;
+    font-size: 1.3em;
+}
+
+.updated_card,
 .project_card p {
     color: #7a7a7a;
     margin-bottom: 1em;
 }
 
+.updated_card,
 .project_card p span {
     font-weight: bold;
 }
@@ -53,6 +72,7 @@
 
 }
 
+.updated_card,
 .project_card_actions {
     margin-top: 1.2em;
     display: flex;

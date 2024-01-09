@@ -19,7 +19,6 @@ function Projects (){
     let message = ''
     if(location.state){
         message = location.state.message
-        console.log(location.updId)
     }
     
     useEffect(()=>{
@@ -33,6 +32,7 @@ function Projects (){
 
             }).then(resp => resp.json())
             .then(data => {
+
                 setProjects(data)
                 setRemoveLoading(true)
             })
@@ -41,6 +41,7 @@ function Projects (){
     }, [])
 
     function removeProject (id) {
+        setProjectMesssage('')
         fetch(`http://localhost:5000/projects/${id}`, {
             method: 'DELETE',
             headers: {
@@ -66,29 +67,15 @@ function Projects (){
             <Container customClass="start">
                 {projects.length > 0 && 
                 projects.map((project)=>{
-                    console.log(location.updId)
                     return (
-                        project.id !== location.updId ? (
-                            <ProjectCard 
-                            id={project.id}
-                            name={project.name}
-                            budget={project.budget}
-                            category={project.category.name}
-                            key={project.id}
-                            handleRemove={removeProject}
-                            customClass=""
-                            />
-                        ) : (
-                            <ProjectCard 
-                            id={project.id}
-                            name={project.name}
-                            budget={project.budget}
-                            category={project.category.name}
-                            key={project.id}
-                            handleRemove={removeProject}
-                            customClass="updated"
-                            />
-                        )
+                        <ProjectCard 
+                        id={project.id}
+                        name={project.name}
+                        budget={project.budget}
+                        category={project.category.name}
+                        key={project.id}
+                        handleRemove={removeProject}
+                        />
                     )
                 })}
 

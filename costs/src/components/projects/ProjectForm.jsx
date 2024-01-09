@@ -9,6 +9,7 @@ function ProjectForm ({handleSubmit, projectData, btnText}){
 
     const [categories, setCategories] = useState([])
     const [project, setProject] = useState(projectData || {})
+    console.log(project)
 
     useEffect(() => {
         fetch("http://localhost:5000/categories", {
